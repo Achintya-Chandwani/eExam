@@ -1,20 +1,21 @@
 version: "3.9"
 
 services:
-  # ── MySQL Database ──────────────────────────────────
+  # ── PostgreSQL Database ─────────────────────────────
   db:
-    image: mysql:8.0
+    image: postgres:16-alpine
     container_name: eexam-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: eexam_db
+      POSTGRES_DB: eexam_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3307:3306"          # 3307 on host so it won't clash with a local MySQL
+      - "5432:5432"
     volumes:
-      - eexam-mysql-data:/var/lib/mysql
+      - eexam-postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d eexam_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,9 +33,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/eexam_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: rootpassword
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/eexam_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       APP_JWT_SECRET: LocalDevSecretKeyChangeThisInProduction1234567890AbCdEf
       APP_JWT_EXPIRATION_MS: 86400000
@@ -43,4 +44,4 @@ services:
       SERVER_PORT: 8080
 
 volumes:
-  eexam-mysql-data:
+  eexam-postgres-data:
