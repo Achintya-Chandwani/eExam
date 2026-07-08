@@ -1,0 +1,8 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "cd eexam-platform && mvn clean package -DskipTests"
+
+[deploy]
+startCommand = "java -jar eexam-platform/target/eexam-platform.jar"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
