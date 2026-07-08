@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>eExam — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">eExam<span class="dot">.</span></div>
+      <div class="role-tag">Admin Portal</div>
+      <nav>
+        <button data-view="overview" class="active">Overview</button>
+        <button data-view="users">Manage Users</button>
+        <button data-view="exams">View Exams</button>
+      </nav>
+      <div class="user-box">
+        <div class="name" id="userName">—</div>
+        <div id="userRole" class="mono" style="font-size:11px; color: var(--amber);"></div>
+        <button class="btn btn-ghost btn-sm" onclick="logout()" style="color:var(--paper); border-color: rgba(247,243,234,0.3);">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <section id="view-overview">
+        <div class="content-header">
+          <div class="eyebrow">Dashboard</div>
+          <h1>Overview</h1>
+          <p>A snapshot of accounts and exams across the platform.</p>
+        </div>
+        <div class="grid grid-3" id="statGrid"></div>
+      </section>
+
+      <!-- USERS -->
+      <section id="view-users" style="display:none;">
+        <div class="content-header" style="display:flex; justify-content:space-between; align-items:flex-end;">
+          <div>
+            <div class="eyebrow">Accounts</div>
+            <h1>Manage Users</h1>
+            <p>Create and manage Examiner and Student accounts.</p>
+          </div>
+          <button class="btn btn-amber" onclick="openUserModal()">+ New User</button>
+        </div>
+        <div class="field" style="max-width:220px;">
+          <select id="roleFilter" onchange="loadUsers()">
+            <option value="">All roles</option>
+            <option value="ADMIN">Admin</option>
+            <option value="EXAMINER">Examiner</option>
+            <option value="STUDENT">Student</option>
+          </select>
+        </div>
+        <div class="card" style="padding:0;">
+          <table>
+            <thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- EXAMS -->
+      <section id="view-exams" style="display:none;">
+        <div class="content-header">
+          <div class="eyebrow">Oversight</div>
+          <h1>All Exams</h1>
+          <p>Every exam created across all examiners.</p>
+        </div>
+        <div id="examsList"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- User create/edit modal -->
+  <div class="modal-backdrop" id="userModal" style="display:none;">
+    <div class="modal">
+      <h2 id="userModalTitle">New user</h2>
+      <form id="userForm">
+        <input type="hidden" id="userId" />
+        <div class="field"><label>Full name</label><input id="fullName" required /></div>
+        <div class="field"><label>Username</label><input id="username" required /></div>
+        <div class="field"><label>Email</label><input id="email" type="email" required /></div>
+        <div class="field"><label>Role</label>
+          <select id="role" required>
+            <option value="STUDENT">Student</option>
+            <option value="EXAMINER">Examiner</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+        <div class="field" id="passwordField"><label>Password</label><input id="password" type="password" /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeUserModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reset password modal -->
+  <div class="modal-backdrop" id="resetModal" style="display:none;">
+    <div class="modal">
+      <h2>Reset password</h2>
+      <form id="resetForm">
+        <input type="hidden" id="resetUserId" />
+        <div class="field"><label>New password</label><input id="newPassword" type="password" required /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeResetModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+/* ============================================================
+   eExam — Design tokens
+   Palette:  paper #F7F3EA · ink #1B2A4A · amber #E8A33D
+             sage #6B8F71 (correct/success) · brick #B5443A (danger)
+             slate #5C6470 (secondary text)
+   Type: Fraunces (display) / Inter (body) / IBM Plex Mono (data, timers)
+   ============================================================ */
+
+:root {
+  --paper: #F7F3EA;
+  --paper-dim: #EFE9DB;
+  --ink: #1B2A4A;
+  --ink-soft: #2C3E63;
+  --amber: #E8A33D;
+  --amber-dim: #F4CE94;
+  --sage: #6B8F71;
+  --sage-dim: #E4EDE3;
+  --brick: #B5443A;
+  --brick-dim: #F5DEDA;
+  --slate: #5C6470;
+  --line: #DDD4BE;
+  --white: #FFFFFF;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-card: 0 1px 2px rgba(27, 42, 74, 0.06), 0 4px 16px rgba(27, 42, 74, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.mono { font-family: "IBM Plex Mono", "SFMono-Regular", monospace; }
+
+a { color: var(--ink); }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+button:active { transform: translateY(1px); }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--ink);
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--ink); }
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+
+.field { margin-bottom: 16px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--ink-soft); }
+.btn-amber { background: var(--amber); color: var(--ink); }
+.btn-amber:hover { box-shadow: 0 2px 10px rgba(232, 163, 61, 0.4); }
+.btn-danger { background: var(--brick-dim); color: var(--brick); }
+.btn-danger:hover { background: var(--brick); color: var(--white); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+.badge-admin { background: #E3E7F0; color: var(--ink); }
+.badge-examiner { background: var(--amber-dim); color: #8A5A11; }
+.badge-student { background: var(--sage-dim); color: #3E5C43; }
+.badge-active { background: var(--sage-dim); color: #3E5C43; }
+.badge-inactive { background: #ECECEC; color: var(--slate); }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  font-size: 14px;
+  z-index: 999;
+  max-width: 340px;
+  animation: toast-in 0.2s ease;
+}
+.toast.error { background: var(--brick); }
+.toast.success { background: var(--sage); }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- App shell: sidebar + content ---- */
+.app-shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.sidebar .brand {
+  font-family: "Fraunces", serif;
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--white);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.sidebar .brand .dot { color: var(--amber); }
+.sidebar .role-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  margin-bottom: 32px;
+}
+.sidebar nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.sidebar nav button {
+  text-align: left;
+  background: transparent;
+  color: rgba(247,243,234,0.72);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+}
+.sidebar nav button:hover { background: rgba(247,243,234,0.08); color: var(--paper); }
+.sidebar nav button.active { background: rgba(232,163,61,0.16); color: var(--amber); font-weight: 600; }
+.sidebar .user-box {
+  border-top: 1px solid rgba(247,243,234,0.15);
+  padding-top: 16px;
+  font-size: 13px;
+}
+.sidebar .user-box .name { font-weight: 600; color: var(--white); }
+.sidebar .user-box button { margin-top: 10px; width: 100%; }
+
+.content { flex: 1; padding: 40px 48px; max-width: 1080px; }
+.content-header { margin-bottom: 28px; }
+.content-header .eyebrow {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--amber); margin-bottom: 6px;
+}
+.content-header h1 { font-size: 30px; }
+.content-header p { color: var(--slate); margin-top: 6px; font-size: 14px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--slate); padding: 10px 12px; border-bottom: 2px solid var(--line); }
+td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+
+.grid { display: grid; gap: 20px; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+.stat-card { text-align: left; }
+.stat-card .value { font-family: "Fraunces", serif; font-size: 32px; font-weight: 600; }
+.stat-card .label { font-size: 12px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
+
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(27,42,74,0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.modal {
+  background: var(--white); border-radius: var(--radius-md); padding: 28px;
+  width: 480px; max-width: 92vw; max-height: 86vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.modal h2 { font-size: 20px; margin-bottom: 18px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
+
+.empty-state {
+  text-align: center; padding: 48px 24px; color: var(--slate);
+  border: 1.5px dashed var(--line); border-radius: var(--radius-md);
+}
+
+/* ---- Exam ticket-stub card (signature element) ---- */
+.exam-ticket {
+  display: flex;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 16px;
+}
+.exam-ticket .stub {
+  width: 92px;
+  flex-shrink: 0;
+  background: var(--ink);
+  color: var(--amber);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "IBM Plex Mono", monospace;
+  position: relative;
+  border-right: 2px dashed rgba(247,243,234,0.35);
+}
+.exam-ticket .stub .num { font-size: 22px; font-weight: 700; }
+.exam-ticket .stub .unit { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(247,243,234,0.7); }
+.exam-ticket .body { padding: 18px 20px; flex: 1; }
+.exam-ticket .body h3 { font-size: 17px; margin-bottom: 4px; }
+.exam-ticket .body .meta { font-size: 12px; color: var(--slate); margin-bottom: 10px; }
+.exam-ticket .body .desc { font-size: 13px; color: var(--slate); margin-bottom: 12px; }
+.exam-ticket .actions { display: flex; gap: 8px; align-items: center; padding: 18px 20px; }
+
+/* ---- Question review card ---- */
+.question-card { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 20px; margin-bottom: 14px; background: var(--white); }
+.question-card .qhead { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.question-card .qnum { font-family: "IBM Plex Mono", monospace; color: var(--amber); font-weight: 700; font-size: 13px; }
+.option-row {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  border: 1.5px solid var(--line); border-radius: var(--radius-sm); margin-bottom: 8px;
+  cursor: pointer; font-size: 14px;
+}
+.option-row:hover { border-color: var(--ink); }
+.option-row.selected { border-color: var(--ink); background: #F3F1EA; font-weight: 600; }
+.option-row.correct { border-color: var(--sage); background: var(--sage-dim); }
+.option-row.incorrect { border-color: var(--brick); background: var(--brick-dim); }
+.option-letter {
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line);
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+
+/* ---- Exam-taking timer ---- */
+.exam-timer {
+  font-family: "IBM Plex Mono", monospace;
+  background: var(--ink); color: var(--amber);
+  padding: 8px 16px; border-radius: 20px; font-size: 15px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.exam-timer.warn { background: var(--brick); color: var(--white); }
+
+.center-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background:
+    repeating-linear-gradient(180deg, transparent, transparent 27px, var(--line) 28px),
+    var(--paper);
+  padding: 24px;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 20px; }

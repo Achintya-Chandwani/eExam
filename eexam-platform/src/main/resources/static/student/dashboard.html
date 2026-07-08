@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>eExam — Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="app-shell" id="dashboardShell">
+    <aside class="sidebar">
+      <div class="brand">eExam<span class="dot">.</span></div>
+      <div class="role-tag">Student Portal</div>
+      <nav>
+        <button data-view="overview" class="active">Overview</button>
+        <button data-view="exams">Available Exams</button>
+        <button data-view="practice">Practice</button>
+        <button data-view="bookmarks">Bookmarks</button>
+        <button data-view="results">My Results</button>
+      </nav>
+      <div class="user-box">
+        <div class="name" id="userName">—</div>
+        <div id="userRole" class="mono" style="font-size:11px; color: var(--amber);"></div>
+        <button class="btn btn-ghost btn-sm" onclick="logout()" style="color:var(--paper); border-color: rgba(247,243,234,0.3);">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <section id="view-overview">
+        <div class="content-header">
+          <div class="eyebrow">Dashboard</div>
+          <h1>Overview</h1>
+          <p>Welcome back. Here's where things stand.</p>
+        </div>
+        <div class="grid grid-3" id="statGrid"></div>
+      </section>
+
+      <section id="view-exams" style="display:none;">
+        <div class="content-header">
+          <div class="eyebrow">Live now</div>
+          <h1>Available Exams</h1>
+          <p>Exams currently open for attempts.</p>
+        </div>
+        <div id="examsList"></div>
+      </section>
+
+      <section id="view-practice" style="display:none;">
+        <div class="content-header">
+          <div class="eyebrow">Self-study</div>
+          <h1>Practice Questions</h1>
+          <p>Questions from past exams, with answers shown for review.</p>
+        </div>
+        <div id="practiceList"></div>
+      </section>
+
+      <section id="view-bookmarks" style="display:none;">
+        <div class="content-header">
+          <div class="eyebrow">Saved</div>
+          <h1>Bookmarked Questions</h1>
+          <p>Questions you've flagged for revision.</p>
+        </div>
+        <div id="bookmarksList"></div>
+      </section>
+
+      <section id="view-results" style="display:none;">
+        <div class="content-header">
+          <div class="eyebrow">History</div>
+          <h1>My Results</h1>
+          <p>Your submitted exam attempts.</p>
+        </div>
+        <div class="card" style="padding:0;">
+          <table>
+            <thead><tr><th>Exam</th><th>Score</th><th>Submitted</th></tr></thead>
+            <tbody id="resultsTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Full-screen exam attempt view -->
+  <div id="examAttemptView" style="display:none; min-height:100vh; background:var(--paper); padding:32px 48px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+      <div>
+        <div class="eyebrow" style="color:var(--amber); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">In progress</div>
+        <h1 id="attemptExamTitle" style="font-family:'Fraunces',serif; font-size:26px;"></h1>
+      </div>
+      <div class="exam-timer" id="examTimer">--:--</div>
+    </div>
+    <div id="attemptQuestionsArea"></div>
+    <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px; padding-bottom:48px;">
+      <button class="btn btn-primary" id="submitAttemptBtn" style="padding:14px 28px;">Submit Exam</button>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/student.js"></script>
+</body>
+</html>

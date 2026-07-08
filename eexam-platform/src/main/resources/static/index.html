@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>eExam — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+<style>
+  .login-card { width: 400px; max-width: 92vw; }
+  .login-brand { display:flex; align-items:baseline; gap:6px; margin-bottom: 6px; }
+  .login-brand .mark { font-family:"Fraunces",serif; font-size:26px; font-weight:700; }
+  .login-brand .mark .dot { color: var(--amber); }
+  .login-sub { color: var(--slate); font-size: 13px; margin-bottom: 28px; }
+  .role-strip { display:flex; gap:8px; margin-top: 22px; }
+  .role-strip .chip {
+    flex:1; text-align:center; font-size:11px; text-transform:uppercase; letter-spacing:0.04em;
+    padding: 8px 4px; border-radius: 20px; background: var(--paper-dim); color: var(--slate);
+  }
+  .err-msg { color: var(--brick); font-size: 13px; margin-top: 4px; min-height: 18px; }
+  .hint { font-size: 12px; color: var(--slate); margin-top: 18px; text-align:center; }
+</style>
+</head>
+<body>
+  <div class="center-screen">
+    <div class="card login-card">
+      <div class="login-brand"><span class="mark">eExam<span class="dot">.</span></span></div>
+      <div class="login-sub">Sign in to your Admin, Examiner, or Student portal.</div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <div class="err-msg" id="errMsg"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" id="submitBtn">Sign in</button>
+      </form>
+
+      <div class="role-strip">
+        <div class="chip">Admin</div>
+        <div class="chip">Examiner</div>
+        <div class="chip">Student</div>
+      </div>
+      <div class="hint">Default admin: <span class="mono">admin</span> / <span class="mono">Admin@123</span> (change after first login)</div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

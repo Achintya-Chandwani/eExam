@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>eExam — Examiner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+<style>
+  .qform-row { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .option-input { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .option-input .letter { width:24px; height:24px; border-radius:50%; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">eExam<span class="dot">.</span></div>
+      <div class="role-tag">Examiner Portal</div>
+      <nav>
+        <button data-view="overview" class="active">Overview</button>
+        <button data-view="exams">My Exams</button>
+      </nav>
+      <div class="user-box">
+        <div class="name" id="userName">—</div>
+        <div id="userRole" class="mono" style="font-size:11px; color: var(--amber);"></div>
+        <button class="btn btn-ghost btn-sm" onclick="logout()" style="color:var(--paper); border-color: rgba(247,243,234,0.3);">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <section id="view-overview">
+        <div class="content-header">
+          <div class="eyebrow">Dashboard</div>
+          <h1>Overview</h1>
+          <p>Your exams at a glance.</p>
+        </div>
+        <div class="grid grid-3" id="statGrid"></div>
+      </section>
+
+      <!-- EXAMS -->
+      <section id="view-exams" style="display:none;">
+        <div class="content-header" style="display:flex; justify-content:space-between; align-items:flex-end;">
+          <div>
+            <div class="eyebrow">Exams</div>
+            <h1>My Exams</h1>
+            <p>Create exams, add questions, and schedule the attempt window.</p>
+          </div>
+          <button class="btn btn-amber" onclick="openExamModal()">+ New Exam</button>
+        </div>
+        <div id="examsList"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Exam create/edit modal -->
+  <div class="modal-backdrop" id="examModal" style="display:none;">
+    <div class="modal">
+      <h2 id="examModalTitle">New exam</h2>
+      <form id="examForm">
+        <input type="hidden" id="examId" />
+        <div class="field"><label>Title</label><input id="title" required /></div>
+        <div class="field"><label>Description</label><textarea id="description" rows="2"></textarea></div>
+        <div class="field"><label>Duration (minutes)</label><input id="durationMinutes" type="number" min="1" required /></div>
+        <div class="qform-row">
+          <div class="field"><label>Opens at</label><input id="scheduledStart" type="datetime-local" required /></div>
+          <div class="field"><label>Closes at</label><input id="scheduledEnd" type="datetime-local" required /></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeExamModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save exam</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Question manager modal -->
+  <div class="modal-backdrop" id="questionsModal" style="display:none;">
+    <div class="modal" style="width:640px;">
+      <h2 id="questionsModalTitle">Questions</h2>
+      <div id="questionsListArea"></div>
+      <hr style="border:none; border-top:1px solid var(--line); margin:18px 0;" />
+      <form id="questionForm">
+        <input type="hidden" id="questionId" />
+        <div class="field"><label>Question text</label><textarea id="questionText" rows="2" required></textarea></div>
+        <div class="option-input"><div class="letter">A</div><input id="optionA" required /></div>
+        <div class="option-input"><div class="letter">B</div><input id="optionB" required /></div>
+        <div class="option-input"><div class="letter">C</div><input id="optionC" required /></div>
+        <div class="option-input"><div class="letter">D</div><input id="optionD" required /></div>
+        <div class="qform-row">
+          <div class="field"><label>Correct option</label>
+            <select id="correctOption" required>
+              <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+            </select>
+          </div>
+          <div class="field"><label>Marks</label><input id="marks" type="number" min="1" value="1" required /></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelQuestionEdit" style="display:none;" onclick="resetQuestionForm()">Cancel edit</button>
+          <button type="submit" class="btn btn-primary" id="questionSubmitBtn">Add question</button>
+        </div>
+      </form>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeQuestionsModal()">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Report modal -->
+  <div class="modal-backdrop" id="reportModal" style="display:none;">
+    <div class="modal" style="width:560px;">
+      <h2 id="reportModalTitle">Performance report</h2>
+      <div id="reportArea"></div>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeReportModal()">Close</button></div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/examiner.js"></script>
+</body>
+</html>
