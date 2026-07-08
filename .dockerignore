@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# IDE / Editor
+.idea/
+.vscode/
+*.iml
+
+# Maven build output (we copy source only)
+eexam-platform/target/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Deployment configs (not needed inside container)
+Procfile
+railway.toml
+docker-compose.yml
