@@ -4,7 +4,6 @@ import com.eexam.dto.CreateUserRequest;
 import com.eexam.model.Role;
 import com.eexam.model.User;
 import com.eexam.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,9 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(CreateUserRequest request) {
@@ -37,7 +34,7 @@ public class UserService {
 
         User user = new User(
                 request.getUsername(),
-                passwordEncoder.encode(request.getPassword()),
+                request.getPassword(),   // stored as plain text
                 request.getFullName(),
                 request.getEmail(),
                 role
@@ -66,7 +63,7 @@ public class UserService {
             user.setRole(Role.valueOf(request.getRole().toUpperCase()));
         }
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setPassword(request.getPassword());   // stored as plain text
         }
         return userRepository.save(user);
     }
@@ -77,7 +74,7 @@ public class UserService {
 
     public void resetPassword(Long id, String newPassword) {
         User user = getById(id);
-        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPassword(newPassword);   // stored as plain text
         userRepository.save(user);
     }
 

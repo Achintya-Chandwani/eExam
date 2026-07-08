@@ -27,7 +27,7 @@ public class User {
 
     @JsonIgnore
     @Column(nullable = false)
-    private String password; // BCrypt hashed
+    private String password; // stored as plain text
 
     @Column(nullable = false, length = 100)
     private String fullName;
