@@ -6,9 +6,7 @@ import com.eexam.model.User;
 import com.eexam.repository.UserRepository;
 import com.eexam.security.JwtUtil;
 import jakarta.validation.Valid;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final com.eexam.security.CustomUserDetailsService userDetailsService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil,
-                           UserRepository userRepository, com.eexam.security.CustomUserDetailsService userDetailsService) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(JwtUtil jwtUtil,
+                          UserRepository userRepository,
+                          com.eexam.security.CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
@@ -31,16 +28,17 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequest request) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-        } catch (Exception e) {
+        // Direct plain-text password comparison (no BCrypt)
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
+
+        if (!user.getPassword().equals(request.getPassword())) {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
+        if (!user.isEnabled()) {
+            throw new BadCredentialsException("Account is disabled");
+        }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         String token = jwtUtil.generateToken(userDetails, user.getRole().name());
